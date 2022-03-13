@@ -4,24 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CanvasActivity">
+    tools:context=".GaleryActivity">
 
-    <com.yucatancorp.myapplication.customviews.CanvasField
-        android:id="@+id/canvasField"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_mine"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="gallery"
-        app:layout_constraintBottom_toTopOf="@+id/canvasField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
