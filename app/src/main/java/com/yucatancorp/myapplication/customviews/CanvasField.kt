@@ -3,10 +3,12 @@ package com.yucatancorp.myapplication.customviews
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.util.Base64
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.net.toUri
 import java.io.ByteArrayOutputStream
 
 class CanvasField(context: Context, attr: AttributeSet) : View(context, attr) {
@@ -19,8 +21,9 @@ class CanvasField(context: Context, attr: AttributeSet) : View(context, attr) {
     private var previousX: Float = 0.0f
     private var previousY: Float = 0.0f
     private val touchTolerance = 4f
-    private val lineThickness = 4f
-    var drowned: Boolean = false
+    private val lineThickness = 20f
+    private var drowned: Boolean = false
+    var uri: String = ""
 
     init {
         paint.isAntiAlias = true
@@ -34,13 +37,18 @@ class CanvasField(context: Context, attr: AttributeSet) : View(context, attr) {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        if(uri!=""){
+            val input = context.contentResolver.openInputStream(uri.toUri())
+            val mBitmap = BitmapFactory.decodeStream(input)
+            val bitmapDrawable = BitmapDrawable(context.resources, mBitmap)
+            this.background = bitmapDrawable
+        }
         bitmap = Bitmap.createBitmap(w, if(h>0) h else (this.parent as View).height, Bitmap.Config.ARGB_8888)
         canvas = Canvas(bitmap)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.drawColor(Color.WHITE)
         canvas?.drawBitmap(bitmap, 0f, 0f, bitmapPaint)
         canvas?.drawPath(path, paint)
         this.parent.requestDisallowInterceptTouchEvent(true)

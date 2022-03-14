@@ -1,6 +1,7 @@
 package com.yucatancorp.myapplication
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -30,15 +31,23 @@ class GalleryAdapter(private val photoListSrc: ArrayList<Uri>, private val conte
 
 class GalleryHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private var photo: ShapeableImageView = itemView.findViewById(R.id._image)
+    private var photoUri : Uri? = null
 
     fun initFrom(photoSrc: Uri, context: Context){
+        photoUri = photoSrc
         Glide.with(context)
             .applyDefaultRequestOptions(RequestOptions().format(DecodeFormat.PREFER_ARGB_8888))
-            .load(photoSrc)
+            .load(photoUri)
             .centerInside()
             .override(100,100)
             .skipMemoryCache(true)
             .into(photo as ImageView)
+
+        photo.setOnClickListener {
+            val intent = Intent(context, CanvasActivity::class.java)
+            intent.putExtra("photoUri", photoUri.toString())
+            context.startActivity(intent)
+        }
     }
 
 }
